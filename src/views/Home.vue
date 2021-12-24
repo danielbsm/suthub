@@ -9,9 +9,9 @@
                     <p class="card-text">Neste desafio iremos consumir uma API de Países, podendo consultar e obter informações de um determinado País.</p>
 
                     <!-- modal trigger button -->
-                    <button type="button" class="btn btn-primary waves-effect waves-float waves-light" data-bs-toggle="modal" data-bs-target="#shareProject">
+                    <router-link tag="button" type="button" class="btn btn-primary waves-effect waves-float waves-light" to="/paises">
                         Acessar
-                    </button>
+                    </router-link>
                     </div>
                 </div>
             </div>

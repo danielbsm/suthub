@@ -4,7 +4,7 @@
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light bg-white">
                 <div class="container-fluid">
-                    <a class="navbar-brand text-uppercase fs-2 logomarca" href="/">Suthub</a>
+                    <router-link class="navbar-brand text-uppercase fs-2 logomarca" tag="a" to="/">Suthub</router-link>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -14,7 +14,7 @@
                                 <router-link class="nav-link" tag="a" to="/">Inicio</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link class="nav-link" tag="a" to="/Paises">Países</router-link>
+                                <router-link class="nav-link" tag="a" to="/paises">Países</router-link>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Formulário</a>
