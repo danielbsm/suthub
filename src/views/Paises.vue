@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <loading :active.sync="isLoading" :is-full-page="fullPage"></loading>
     <div
       class="
         d-flex
@@ -59,6 +60,8 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
+      fullPage: true,
       selected: null,
       dadosRegiao: [],
       regions: [
@@ -92,8 +95,8 @@ export default {
         .then((r) => r.json())
         .then((r) => {
           this.dadosRegiao = r;
+          this.isLoading = false;
         });
-      this.isLoading = false;
     },
   },
   watch: {
