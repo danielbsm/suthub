@@ -15,8 +15,8 @@
     >
       <button
         type="button"
-        v-b-modal.modal-dados-brasil
         class="btn btn-light dados-brasil text-success fs-6 text-uppercase"
+        @click.prevent="buscarDadosBrasil"
       >
         Dados do Brasil
         <img
@@ -43,14 +43,23 @@
       </div>
     </div>
     <b-modal id="modal-dados-brasil" size="lg" title="Dados do Brasil">
-      <h5>teste</h5>
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          v-for="(dados, key) in dadosBrasil"
+          :key="key"
+        >
+          {{ key }} - {{ dados }}
+        </li>
+      </ul>
     </b-modal>
     <div class="dados-regiao-container mt-3">
-      <CardPaises :paises="dadosRegiao" />
+      <CardPaises :paises="dadosPaisesRegiao" />
     </div>
   </div>
 </template>
 <script>
+import { apiPaises } from "@/services.js";
 import CardPaises from "@/components/CardPaises.vue";
 
 export default {
@@ -63,7 +72,8 @@ export default {
       isLoading: false,
       fullPage: true,
       selected: null,
-      dadosRegiao: [],
+      dadosPaisesRegiao: null,
+      dadosBrasil: null,
       regions: [
         {
           nome: "Africa",
@@ -89,19 +99,27 @@ export default {
     };
   },
   methods: {
-    getDadosRegiao(regiao) {
-      this.isLoading = true;
-      fetch(`https://restcountries.com/v3.1/region/${regiao}`)
-        .then((r) => r.json())
-        .then((r) => {
-          this.dadosRegiao = r;
+    buscarDadosBrasil() {
+      if (this.dadosBrasil === null) {
+        this.isLoading = true;
+        apiPaises.get("/name/brazil").then((r) => {
+          this.dadosBrasil = r.data[0];
           this.isLoading = false;
+          this.$bvModal.show("modal-dados-brasil");
         });
+      }
+    },
+    buscarDadosRegiao(regiao) {
+      this.isLoading = true;
+      apiPaises.get(`/region/${regiao}`).then((r) => {
+        this.dadosPaisesRegiao = r.data;
+        this.isLoading = false;
+      });
     },
   },
   watch: {
-    selected(region) {
-      this.getDadosRegiao(region);
+    selected(regiao) {
+      this.buscarDadosRegiao(regiao);
     },
   },
 };

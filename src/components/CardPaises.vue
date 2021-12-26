@@ -4,13 +4,7 @@
       <div class="card card-developer-meetup shadow">
         <!----><!---->
         <div class="bg-light-primary rounded-top text-center p-2 bg-dark">
-          <img
-            :src="pais.flags.png"
-            alt="Meeting Pic"
-            width="100%"
-            height="170"
-            class=""
-          />
+          <img :src="pais.flags.png" alt="Meeting Pic" height="170" class="" />
         </div>
         <div class="card-body">
           <div class="media">
