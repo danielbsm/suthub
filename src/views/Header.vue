@@ -4,45 +4,25 @@
       <span class="text-white">Desafio FrontEnd</span>
     </div>
     <div class="container">
-      <nav class="navbar navbar-expand-lg navbar-light bg-white">
-        <div class="container-fluid">
-          <router-link class="navbar-brand text-uppercase fs-2 logomarca" to="/"
-            >Suthub</router-link
-          >
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto fs-5">
-              <li class="nav-item">
-                <router-link class="nav-link" to="/">Inicio</router-link>
-              </li>
-              <li class="nav-item">
-                <router-link class="nav-link" to="/paises">Países</router-link>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Formulário</a>
-              </li>
-              <li class="nav-item">
-                <button
-                  type="button"
-                  class="btn btn-primary btn mt-1 text-uppercase ms-2"
-                >
-                  Cadastre-se
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <b-navbar
+        toggleable="lg"
+        class="navbar navbar-expand-lg navbar-light bg-white"
+      >
+        <b-navbar-brand class="logomarca fs-1 m-0 p-0" to="/"
+          >Suthub</b-navbar-brand
+        >
+
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+        <b-collapse id="nav-collapse" is-nav>
+          <!-- Right aligned nav items -->
+          <b-navbar-nav class="ms-auto fs-5">
+            <b-nav-item to="/">Inicio</b-nav-item>
+            <b-nav-item to="/paises">Paises</b-nav-item>
+            <b-button variant="primary">Formulário</b-button>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
     </div>
     <div class="shadow p-2 bg-white rounded"></div>
   </div>
@@ -70,6 +50,13 @@ export default {
   background-clip: text;
   -webkit-background-clip: text; /* Alguns navegadores precisam do prefixo */
   -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+}
+
+@media only screen and (max-width: 500px) {
+  .logomarca {
+    color: black;
+  }
 }
 </style>
 

@@ -1,43 +1,42 @@
 <template>
   <div class="container">
     <loading :active.sync="isLoading" :is-full-page="fullPage"></loading>
-    <div class="d-flex p-3 mt-4 bg-color shadow rounded">
-      <button
-        type="button"
-        class="btn btn-light dados-brasil fs-6 text-uppercase"
-        @click.prevent="buscarDadosBrasil"
-      >
-        Dados do Brasil
-        <img
-          src="../assets/svg/brazil.svg"
-          alt="Brasil"
-          width="30px"
-          height="20px"
-        />
-      </button>
-      <b-form-select
-        v-model="selected"
-        class="form-control dados-regiao ms-auto"
-      >
-        <b-form-select-option :value="null" disabled selected
-          >Selecione uma região
-        </b-form-select-option>
-        <b-form-select-option
-          v-for="region in regions"
-          :value="region.continente"
-          :key="region.continente"
-          >{{ region.nome }}</b-form-select-option
-        >
-      </b-form-select>
-      <div class="ms-auto">
-        <div class="search">
-          <i class="fa fa-search"></i>
-          <input
-            type="text"
-            class="form-control text-rigth"
-            placeholder="Buscar..."
-          />
-          <button class="btn btn-primary">Buscar</button>
+    <div class="p-3 mt-4 bg-color shadow rounded">
+      <div class="row">
+        <div class="col-md-4 mx-auto m-2">
+          <button
+            type="button"
+            class="form-control btn btn-light dados-brasil"
+            @click.prevent="buscarDadosBrasil"
+          >
+            Dados do Brasil
+            <img
+              src="../assets/svg/brazil.svg"
+              alt="Brasil"
+              width="30px"
+              height="20px"
+            />
+          </button>
+        </div>
+        <div class="col-md-4 mx-auto m-2">
+          <b-form-select v-model="selected" class="form-control dados-regiao">
+            <b-form-select-option :value="null" disabled selected
+              >Selecione uma região
+            </b-form-select-option>
+            <b-form-select-option
+              v-for="region in regions"
+              :value="region.continente"
+              :key="region.continente"
+              >{{ region.nome }}</b-form-select-option
+            >
+          </b-form-select>
+        </div>
+        <div class="col-md-4 mx-auto m-2">
+          <div class="search">
+            <i class="fa fa-search"></i>
+            <input type="text" class="form-control" placeholder="Buscar..." />
+            <button class="btn btn-primary">Buscar</button>
+          </div>
         </div>
       </div>
     </div>
@@ -148,12 +147,7 @@ export default {
   background-color: #3f3d56;
 }
 
-.dados-regiao {
-  width: 250px;
-}
-
 .search {
-  width: 250px;
   position: relative;
   box-shadow: 0 0 40px rgba(51, 51, 51, 0.1);
 }
@@ -183,12 +177,9 @@ export default {
   padding: 0;
 }
 
-@media only screen and (max-width: 991px) {
-  .dados-regiao {
-    float: right;
-  }
-  .dados-brasil {
-    float: left;
+@media only screen and (max-width: 767px) {
+  .container {
+    background-position: 0px 130px;
   }
 }
 </style>

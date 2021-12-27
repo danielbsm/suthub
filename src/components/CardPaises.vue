@@ -4,7 +4,13 @@
       <div class="card card-developer-meetup shadow">
         <!----><!---->
         <div class="bg-light-primary rounded-top text-center p-2 bg-dark">
-          <img :src="pais.flags.png" alt="Meeting Pic" height="170" class="" />
+          <img
+            :src="pais.flags.png"
+            alt="pais.name.comom"
+            width="100%"
+            height="170"
+            class="card-flags"
+          />
         </div>
         <div class="card-body">
           <div class="media">
@@ -63,3 +69,10 @@ export default {
   props: ["paises"],
 };
 </script>
+<style scoped>
+@media only screen and (max-width: 1200) {
+  .card-flags {
+    width: 150px;
+  }
+}
+</style>

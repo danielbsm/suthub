@@ -10,7 +10,7 @@
         <h5 class="card-title">Desafio API Países</h5>
         <p class="card-text">
           Neste desafio será consumido a API de Países, podendo consultar e
-          obter informações de um determinado País.
+          obter informações de uma determinada Região, País e idiomas.
         </p>
 
         <!-- modal trigger button -->
@@ -24,21 +24,19 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card mb-4">
       <div class="card-body text-center">
         <b-icon-code-square font-scale="3"></b-icon-code-square>
         <h5 class="card-title">Validação de formulário</h5>
         <p class="card-text">
           Neste desafio será apresentado as validações dos campos, seleções e
-          retorno das validações pelo submit.
+          retorno das validações envidas pelo submit.
         </p>
 
         <!-- modal trigger button -->
         <button
           type="button"
           class="btn btn-primary waves-effect waves-float waves-light"
-          data-bs-toggle="modal"
-          data-bs-target="#shareProject"
         >
           Acessar
         </button>
