@@ -19,7 +19,9 @@
           <b-navbar-nav class="ms-auto fs-5">
             <b-nav-item to="/">Inicio</b-nav-item>
             <b-nav-item to="/paises">Paises</b-nav-item>
-            <b-button variant="primary">Formulário</b-button>
+            <b-button to="/formulario" variant="primary" class="mt-1"
+              >Formulário</b-button
+            >
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>

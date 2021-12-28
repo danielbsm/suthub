@@ -34,12 +34,13 @@
         </p>
 
         <!-- modal trigger button -->
-        <button
+        <router-link
           type="button"
           class="btn btn-primary waves-effect waves-float waves-light"
+          to="/formulario"
         >
           Acessar
-        </button>
+        </router-link>
       </div>
     </div>
   </div>
