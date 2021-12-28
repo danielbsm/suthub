@@ -37,12 +37,14 @@
               <hr class="m-0 p-0" />
               <span
                 >Idioma(s):
-                <span
+                <a
                   class="fw-bold"
+                  style="text-decoration: none; cursor: pointer"
                   v-for="(idioma, key, value) in pais.languages"
                   :key="key"
+                  @click.prevent="buscarDadosIdioma(idioma)"
                   >{{ value >= 1 ? `, ${idioma}` : idioma }}
-                </span>
+                </a>
               </span>
               <hr class="m-0 p-0" />
               <span
@@ -52,21 +54,64 @@
               <hr class="m-0 p-0" />
               <span
                 >Ver no mapa:
-                <a target="_blank" :href="pais.maps.googleMaps"
-                  ><b-icon-flag class="fs-5 mt-2"></b-icon-flag></a
-              ></span>
+                <a :href="pais.maps.googleMaps" target="_blank">
+                  <b-icon-flag class="fs-5 mt-2 ms-2 google-maps"></b-icon-flag
+                ></a>
+              </span>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <b-modal
+      id="modal-dados-idioma"
+      centered
+      size="xl"
+      title="Paises com o mesmo idioma"
+      scrollable
+      ok-only
+      ok-title="Fechar"
+      ok-variant="danger"
+    >
+      <div class="row">
+        <div
+          class="card col-sm-2 m-3 shadow ms-auto"
+          v-for="(dados, key) in dadosIdioma"
+          :key="key"
+        >
+          <img
+            :src="dados.flags.svg"
+            class="card-img-top border mt-2"
+            :alt="dados.name.common"
+            style="heigth: 70px"
+          />
+          <span class="text-center pb-2">{{ dados.name.common }}</span>
+        </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
 <script>
+import { apiPaises } from "@/services.js";
+
 export default {
   name: "CardPaises",
   props: ["paises"],
+  data() {
+    return {
+      dadosIdioma: null,
+      urlMaps: null,
+    };
+  },
+  methods: {
+    buscarDadosIdioma(idioma) {
+      apiPaises.get(`/lang/${idioma}`).then((r) => {
+        this.dadosIdioma = r.data;
+        this.$bvModal.show("modal-dados-idioma");
+      });
+    },
+  },
 };
 </script>
 <style scoped>
@@ -74,5 +119,9 @@ export default {
   .card-flags {
     width: 150px;
   }
+}
+
+.google-maps {
+  cursor: pointer;
 }
 </style>

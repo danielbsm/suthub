@@ -4,7 +4,7 @@
       <img src="../assets/home.svg" alt="Home" />
     </div>
 
-    <div class="card mb-4">
+    <div class="card mb-4 shadow">
       <div class="card-body text-center">
         <b-icon-flag font-scale="3"></b-icon-flag>
         <h5 class="card-title">Desafio API Países</h5>
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="card mb-4">
+    <div class="card mb-4 shadow">
       <div class="card-body text-center">
         <b-icon-code-square font-scale="3"></b-icon-code-square>
         <h5 class="card-title">Validação de formulário</h5>

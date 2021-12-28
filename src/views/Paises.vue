@@ -19,7 +19,10 @@
           </button>
         </div>
         <div class="col-md-4 mx-auto m-2">
-          <b-form-select v-model="selected" class="form-control dados-regiao">
+          <b-form-select
+            v-model="selected"
+            class="form-control dados-regiao text-center"
+          >
             <b-form-select-option :value="null" disabled selected
               >Selecione uma região
             </b-form-select-option>
@@ -33,15 +36,25 @@
         </div>
         <div class="col-md-4 mx-auto m-2">
           <div class="search">
-            <i class="fa fa-search"></i>
-            <input type="text" class="form-control" placeholder="Buscar..." />
-            <button class="btn btn-primary">Buscar</button>
+            <form>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Buscar..."
+                v-model="pais"
+              />
+              <button @click.prevent="buscarDadosPais" class="btn btn-primary">
+                Buscar
+              </button>
+            </form>
           </div>
         </div>
       </div>
     </div>
     <div class="dados-regiao-container mt-3">
-      <CardPaises :paises="dadosPaisesRegiao" />
+      <CardPaises
+        :paises="dadosPaisesRegiao !== null ? dadosPaisesRegiao : dadosPais"
+      />
     </div>
 
     <b-modal id="modal-dados-brasil" size="lg" title="Dados do Brasil">
@@ -71,8 +84,11 @@ export default {
       isLoading: false,
       fullPage: true,
       selected: null,
+      pais: null,
+      dadosIdioma: null,
       dadosPaisesRegiao: null,
       dadosBrasil: null,
+      dadosPais: null,
       regions: [
         {
           nome: "Africa",
@@ -114,15 +130,39 @@ export default {
       this.isLoading = true;
       apiPaises.get(`/region/${regiao}`).then((r) => {
         this.dadosPaisesRegiao = r.data;
+        this.dadosPais = null;
         this.isLoading = false;
       });
     },
-    buscarDadosPais(pais) {
-      this.isLoading = true;
-      apiPaises.get(`/name/${pais}`).then((r) => {
-        this.dadosPaisesRegiao = r.data;
-        this.isLoading = false;
-      });
+    buscarDadosPais() {
+      if (this.pais) {
+        this.isLoading = true;
+        apiPaises
+          .get(`/name/${this.pais}`)
+          .then((r) => {
+            this.dadosPaisesRegiao = null;
+            this.dadosPais = r.data;
+            this.isLoading = false;
+          })
+          .catch((e) => {
+            if (e.response.status === 404) {
+              this.$swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text:
+                  "Nenhum pais encontrado, por favor verifique o nome digitado e tente novamente." +
+                  this.pais,
+              });
+              this.isLoading = false;
+            }
+          });
+      } else {
+        this.$swal({
+          icon: "error",
+          title: "Oops...",
+          text: "Você precisa digitar algo para pesquisar.",
+        });
+      }
     },
   },
   watch: {
