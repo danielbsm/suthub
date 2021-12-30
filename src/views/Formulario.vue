@@ -15,7 +15,10 @@
             >
               <validation-provider
                 name="Data de Nascimento"
-                :rules="{ required: true, formatDate: { min: 18, max: 65 } }"
+                :rules="{
+                  required: true,
+                  validarAniversario: { min: 18, max: 65 },
+                }"
                 v-slot="{ errors, classes }"
               >
                 <b-form-input
@@ -48,7 +51,7 @@
             <b-form-group label="CPF:" label-for="cpf">
               <validation-provider
                 name="CPF"
-                :rules="{ required: true, regex: /^\d{3}.\d{3}.\d{3}-\d{2}$/ }"
+                :rules="{ required: true, validarCpf: true }"
                 v-slot="{ errors, classes }"
               >
                 <b-form-input
@@ -264,7 +267,7 @@ Object.keys(rules).forEach((rule) => {
   });
 });
 
-extend("formatDate", {
+extend("validarAniversario", {
   validate(value, args) {
     if (value.length === 10) {
       const newDate = value.split("/");
@@ -276,9 +279,6 @@ extend("formatDate", {
         data.getFullYear() - Number.parseInt(args.min)
       );
       const aniversario = new Date(`${newDate[1]}/${newDate[0]}/${newDate[2]}`);
-      //console.log("data65", data65);
-      //console.log("data15", data15);
-      //console.log("aniversario", aniversario);
       if (aniversario >= data65 && aniversario <= data15) {
         return true;
       } else {
@@ -289,6 +289,57 @@ extend("formatDate", {
     }
   },
   params: ["min", "max"],
+});
+
+extend("validarCpf", (value) => {
+  let cpfDigitado = value.replaceAll("-", "");
+  cpfDigitado = cpfDigitado.replaceAll(".", "");
+  if (cpfDigitado.length === 11) {
+    var Soma;
+    var Resto;
+
+    Soma = 0;
+    if (
+      cpfDigitado == "00000000000" ||
+      cpfDigitado == "11111111111" ||
+      cpfDigitado == "22222222222" ||
+      cpfDigitado == "33333333333" ||
+      cpfDigitado == "44444444444" ||
+      cpfDigitado == "66666666666" ||
+      cpfDigitado == "77777777777" ||
+      cpfDigitado == "88888888888" ||
+      cpfDigitado == "99999999999"
+    )
+      return "O CPF digtado é invalido.";
+
+    for (let i = 1; i <= 9; i++)
+      Soma = Soma + parseInt(cpfDigitado.substring(i - 1, i)) * (11 - i);
+    Resto = (Soma * 10) % 11;
+
+    if (Resto == 10 || Resto == 11) Resto = 0;
+    if (Resto != parseInt(cpfDigitado.substring(9, 10)))
+      return "O CPF digtado é invalido.";
+
+    Soma = 0;
+    for (let i = 1; i <= 10; i++)
+      Soma = Soma + parseInt(cpfDigitado.substring(i - 1, i)) * (12 - i);
+    Resto = (Soma * 10) % 11;
+
+    if (Resto == 10 || Resto == 11) Resto = 0;
+    if (Resto != parseInt(cpfDigitado.substring(10, 11)))
+      return "O CPF digtado é invalido.";
+    return true;
+  } else {
+    return "CPF incompleto.";
+  }
+});
+
+extend("validarRendaMensal", (value) => {
+  if (value !== 0 && value >= 1000) {
+    return true;
+  } else {
+    return "O campo Renda Mensal precisa ser 1000 ou maior";
+  }
 });
 
 import { apiBuscaCep } from "@/services.js";
@@ -400,10 +451,6 @@ export default {
       if (cepFormatado.length === 8) {
         this.buscaCep(cepFormatado);
       }
-    },
-    rendaMensal() {
-      let rendaMensais = this.rendaMensal.split(",");
-      this.rendaMensal = rendaMensais[0].replace(".", "");
     },
   },
 };
