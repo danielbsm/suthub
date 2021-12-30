@@ -83,7 +83,6 @@
                   v-model="selectRaca"
                   @change="selectPet($event)"
                 >
-                  <option selected disabled>Selecione uma opção</option>
                   <option
                     v-for="pet in pets"
                     :key="pet.value"
@@ -140,16 +139,18 @@
             <b-form-group label="Renda mensal:" label-for="renda">
               <validation-provider
                 name="Renda Mensal"
-                :rules="{ required: true, min_value: 1000 }"
+                :rules="{ required: true, validarRendaMensal: true }"
                 v-slot="{ errors, classes }"
               >
-                <b-input-group prepend="R$">
-                  <b-form-input
+                <b-input-group prepend="R$" class="mb-2">
+                  <Money
+                    class="form-control input-renda"
                     :class="classes"
+                    prepend="R$"
+                    name="dinheiro"
+                    v-bind="money"
                     v-model="rendaMensal"
-                    v-money="money"
-                    placeholder="0,00"
-                  ></b-form-input>
+                  ></Money>
                 </b-input-group>
                 <span class="mensagem-error">{{ errors[0] }}</span>
               </validation-provider>
@@ -231,6 +232,7 @@
               >
                 <b-form-input
                   :class="classes"
+                  class="text-uppercase"
                   placeholder="Ex: GO"
                   v-model="estado"
                   maxlength="2"
@@ -267,7 +269,7 @@
       </div>
       <div class="dados-formulario">
         <h5 class="m-0">Renda Mensal:</h5>
-        <p class="m-0">R$: {{ rendaMensal }}</p>
+        <p class="m-0">R$: {{ rendaMensal | formataRenda }}</p>
       </div>
       <div class="dados-formulario">
         <h5 class="m-0">Espécie :</h5>
@@ -310,7 +312,7 @@ import {
 } from "vee-validate";
 import * as rules from "vee-validate/dist/rules";
 import { messages } from "vee-validate/dist/locale/pt_BR.json";
-import { VMoney } from "v-money";
+import { Money } from "v-money";
 
 configure({
   classes: {
@@ -393,11 +395,13 @@ extend("validarCpf", (value) => {
   }
 });
 
-extend("validarRendaMensal", (value) => {
-  if (value !== 0 && value >= 1000) {
+extend("validarRendaMensal", (valor) => {
+  if (valor >= 0.01 && valor < 1000) {
+    return "O campo Renda Mensal precisa ser 1000 ou maior";
+  } else if (valor >= 1000) {
     return true;
   } else {
-    return "O campo Renda Mensal precisa ser 1000 ou maior";
+    return "";
   }
 });
 
@@ -407,6 +411,7 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
+    Money,
   },
   data() {
     return {
@@ -420,7 +425,7 @@ export default {
       bairro: null,
       cidade: null,
       estado: null,
-      rendaMensal: null,
+      rendaMensal: 0,
       selectRaca: null,
       racas: [],
       racaSelecionada: null,
@@ -462,8 +467,13 @@ export default {
       file1: null,
     };
   },
-  directives: {
-    money: VMoney,
+  filters: {
+    formataRenda(valor) {
+      return valor.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      });
+    },
   },
   methods: {
     buscaCep(cepFormatado) {
@@ -503,7 +513,6 @@ export default {
       }
     },
     onSubmit() {
-      console.log("teste");
       this.$bvModal.show("modal-formulario");
     },
   },
@@ -513,10 +522,6 @@ export default {
       if (cepFormatado.length === 8) {
         this.buscaCep(cepFormatado);
       }
-    },
-    rendaMensal() {
-      let rendaMensais = this.rendaMensal.split(",");
-      this.rendaMensal = rendaMensais[0].replace(".", "");
     },
     racaSelecionada() {
       this.outraRaca = null;
