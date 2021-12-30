@@ -1,7 +1,7 @@
-# Desafio front-end Suthub
+# Desafio front-end Suthub 😎
  - Foi construído uma pequena aplicação Web com os requisitos solicitados.
  
- ## Requisitos:
+ ## Requisitos: 📝
  - Um formulário de cadastro que faça as seguintes validações e funcionalidades. Ao finalizar o preenchimento e clicar no botão “submit”, ele deve apresentar as informações cadastradas em uma nova página ou modal, devidamente organizadas:
  - Data de nascimento - campo em formato data brasileiro: máxima 65 anos, mínima 18 anos
  - Nome completo: ao menos 2 palavras
@@ -21,10 +21,10 @@
  - Uma função de busca por país. O usuário deve poder digitar o nome de um país em um campo de texto, e a aplicação deve conseguir encontrar o país em questão ou qualquer país de nome similar, mostrando em tela seu nome correto e quais são seus idiomas oficiais
  - Ao clicar em um dos idiomas na tela, apresentado pela função anterior, a aplicação deve listar os nomes de todos os países que possuem o idioma em comum
 
-## Demonstração
+## Demonstração 🌍
 [Demo](https://suthub-alpha.vercel.app/)
 
-## Instalação
+## Instalação 👨‍💻
 - Baixe o repositório como arquivo zip ou faça um clone;
 - Acesse o diretório suthub;
 - Execute os comandos abaixo:
