@@ -435,10 +435,12 @@ export default {
         masked: false /* doesn't work with directive */,
       },
       pets: [
+        { value: null, text: "Selecione uma opção" },
         { value: "Cachorro", text: "Cachorro" },
         { value: "Gato", text: "Gato" },
       ],
       racaCaes: [
+        { value: null, text: "Selecione uma opção" },
         { value: "Vira Lata", text: "Vira Lata" },
         { value: "Coffap", text: "Coffap" },
         { value: "Labrador", text: "Labrador" },

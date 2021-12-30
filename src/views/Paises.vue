@@ -57,7 +57,13 @@
       />
     </div>
 
-    <b-modal id="modal-dados-brasil" size="lg" title="Dados do Brasil">
+    <b-modal
+      id="modal-dados-brasil"
+      size="lg"
+      title="Dados do Brasil"
+      ok-only
+      ok-title="Fechar"
+    >
       <ul class="list-group">
         <li
           class="list-group-item"

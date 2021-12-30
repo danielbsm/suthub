@@ -3,16 +3,19 @@
     <div class="vld-parent"></div>
     <Header />
     <router-view />
+    <Footer />
   </div>
 </template>
 
 <script>
-import Header from "./views/Header.vue";
+import Header from "./components/Header.vue";
+import Footer from "./components/Footer.vue";
 
 export default {
   name: "App",
   components: {
     Header,
+    Footer,
   },
 };
 </script>
