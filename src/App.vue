@@ -14,5 +14,8 @@ export default {
   components: {
     Header,
   },
+  created() {
+    document.title = "Desafio Suthub";
+  },
 };
 </script>
