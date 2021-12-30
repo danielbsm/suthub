@@ -35,10 +35,16 @@
             <b-form-group label="Nome completo:" label-for="nome">
               <validation-provider
                 name="Nome"
-                rules="required|alpha_spaces|min:2"
+                :rules="{
+                  required: true,
+                  alpha_spaces: true,
+                  min: 2,
+                  regex: /[A-z][ ][A-z]/,
+                }"
                 v-slot="{ errors, classes }"
               >
                 <b-form-input
+                  name="nome"
                   :class="classes"
                   placeholder="Ex: João Silva"
                   v-model="nome"
@@ -115,11 +121,11 @@
               </validation-provider>
             </b-form-group>
           </b-col>
-          <b-col md="4" sm="12" class="mt-2" v-if="racaSelecionada == 'OU'">
-            <b-form-group label="Digite a raça:" label-for="outraRaca">
+          <b-col md="4" sm="12" class="mt-2" v-if="racaSelecionada == 'Outro'">
+            <b-form-group label="Outra raça:" label-for="outraRaca">
               <validation-provider
                 name="Outra Raça"
-                rules="required"
+                :rules="{ required: true, alpha_spaces: true, min: 2 }"
                 v-slot="{ errors, classes }"
               >
                 <b-form-input
@@ -191,6 +197,7 @@
                 v-slot="{ errors, classes }"
               >
                 <b-form-input
+                  name="bairro"
                   :class="classes"
                   placeholder="Digite seu bairro"
                   v-model="bairro"
@@ -239,6 +246,58 @@
         </div>
       </b-form>
     </ValidationObserver>
+    <b-modal
+      id="modal-formulario"
+      title="Retorno dos dados"
+      centered
+      ok-only
+      ok-title="Fechar"
+    >
+      <div class="dados-formulario">
+        <h5 class="m-0">Data de Nascimento:</h5>
+        <p class="m-0">{{ dataDeNascimento }}</p>
+      </div>
+      <div class="dados-formulario">
+        <h5 class="m-0">Nome:</h5>
+        <p class="m-0">{{ nome }}</p>
+      </div>
+      <div class="dados-formulario">
+        <h5 class="m-0">CPF:</h5>
+        <p class="m-0">{{ cpf }}</p>
+      </div>
+      <div class="dados-formulario">
+        <h5 class="m-0">Renda Mensal:</h5>
+        <p class="m-0">R$: {{ rendaMensal }}</p>
+      </div>
+      <div class="dados-formulario">
+        <h5 class="m-0">Espécie :</h5>
+        <p class="m-0">{{ selectRaca }}</p>
+      </div>
+      <div class="dados-formulario">
+        <h5 class="m-0">Raça :</h5>
+        <p class="m-0">{{ outraRaca ? outraRaca : racaSelecionada }}</p>
+      </div>
+      <div class="dados-formulario">
+        <h5 class="m-0">CEP:</h5>
+        <p class="m-0">{{ cep }}</p>
+      </div>
+      <div class="dados-formulario">
+        <h5 class="m-0">Rua:</h5>
+        <p class="m-0">{{ logradouro }}</p>
+      </div>
+      <div class="dados-formulario">
+        <h5 class="m-0">Bairro:</h5>
+        <p class="m-0">{{ bairro }}</p>
+      </div>
+      <div class="dados-formulario">
+        <h5 class="m-0">Cidade:</h5>
+        <p class="m-0">{{ cidade }}</p>
+      </div>
+      <div class="dados-formulario">
+        <h5 class="m-0">Estado:</h5>
+        <p class="m-0">{{ estado }}</p>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -354,7 +413,6 @@ export default {
       isLoading: false,
       fullPage: true,
       nome: null,
-      email: null,
       cpf: null,
       dataDeNascimento: null,
       cep: null,
@@ -377,24 +435,24 @@ export default {
         masked: false /* doesn't work with directive */,
       },
       pets: [
-        { value: "cao", text: "Cão" },
-        { value: "gato", text: "Gato" },
+        { value: "Cachorro", text: "Cachorro" },
+        { value: "Gato", text: "Gato" },
       ],
       racaCaes: [
-        { value: "VL", text: "Vira Lata" },
-        { value: "CF", text: "Coffap" },
-        { value: "LB", text: "Labrador" },
-        { value: "BD", text: "Buldogue" },
-        { value: "HK", text: "Husk" },
-        { value: "OU", text: "Outros" },
+        { value: "Vira Lata", text: "Vira Lata" },
+        { value: "Coffap", text: "Coffap" },
+        { value: "Labrador", text: "Labrador" },
+        { value: "Buldogue", text: "Buldogue" },
+        { value: "Husk", text: "Husk" },
+        { value: "Outro", text: "Outro" },
       ],
       racaGato: [
-        { value: "PS", text: "Persa" },
-        { value: "MC", text: "Maine Coon" },
-        { value: "SM", text: "Siamês" },
-        { value: "RL", text: "Ragdoll" },
-        { value: "SP", text: "Sphynx" },
-        { value: "OU", text: "Outros" },
+        { value: "Persa", text: "Persa" },
+        { value: "Maine Coon", text: "Maine Coon" },
+        { value: "Siamês", text: "Siamês" },
+        { value: "Ragdoll", text: "Ragdoll" },
+        { value: "Sphynx", text: "Sphynx" },
+        { value: "Outro", text: "Outro" },
       ],
       show: true,
       selected: null,
@@ -435,14 +493,16 @@ export default {
     selectPet(event) {
       this.disabled = false;
       this.outraRaca = null;
-      if (event.target.value === "cao") {
+      this.racaSelecionada = null;
+      if (event.target.value === "Cachorro") {
         this.racas = this.racaCaes;
       } else {
         this.racas = this.racaGato;
       }
     },
     onSubmit() {
-      alert("submitted");
+      console.log("teste");
+      this.$bvModal.show("modal-formulario");
     },
   },
   watch: {
@@ -452,6 +512,13 @@ export default {
         this.buscaCep(cepFormatado);
       }
     },
+    rendaMensal() {
+      let rendaMensais = this.rendaMensal.split(",");
+      this.rendaMensal = rendaMensais[0].replace(".", "");
+    },
+    racaSelecionada() {
+      this.outraRaca = null;
+    },
   },
 };
 </script>
@@ -459,5 +526,11 @@ export default {
 <style>
 .mensagem-error {
   color: red;
+}
+
+.dados-formulario {
+  margin: 4px 0 0 0;
+  padding: 0;
+  border-bottom: 1px solid #dee2e6;
 }
 </style>
